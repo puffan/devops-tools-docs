@@ -243,7 +243,7 @@ max | 允许最长的行数 | Integer |   20  | 3.2
 
 CheckStyle 所有消息可以定制，如果默认的消息不符合实际需要则可以可以参考文档 4.3.1 进行自定义。
 
-##### 4.1.13.2 ExecutableStatementCount
+##### 4.1.13.2 ExecutableStatementCount（检查：可执行语句数量）
 
 自 Checkstyle 3.2 引入。
 
@@ -278,7 +278,33 @@ tokens | 检查的 tokens | 这些类型 Token 的子集：CTOR_DEF, METHOD_DEF,
 
 	executableStatementCount
 
-##### 4.1.13.3 FileLength
+##### 4.1.13.3 FileLength（检查：文件长度）
+
+自 Checkstyle 5.0 引入。
+
+检查行数很多的源文件。
+
+原由：如果一个源代码文件变得非常长以至于难以理解，则有必要将其重构为聚焦在一个特殊任务的几个独立类。
+
+**属性清单**
+
+名称 |     描述     | 类型    | 默认值 | 引入版本
+----|--------------|---------|-------|------
+max | 允许最长的行数 | Integer |   2000  | 3.2
+fileExtensions | 检查的文件类型扩展名 | String Set |   all files  | 5.0
+
+**示例配置**
+
+配置允许最多 1500 行代码的检查项:
+	
+	<module name="FileLength">
+	  <property name="max" value="1500"/>
+	</module>
+
+**错误消息**
+
+	maxLen.file
+
 ##### 4.1.13.4 LineLength
 ##### 4.1.13.5 MethodCount
 ##### 4.1.13.6 MethodLength
