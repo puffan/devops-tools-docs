@@ -241,9 +241,43 @@ max | 允许最长的行数 | Integer |   20  | 3.2
 
 	maxLen.anonInner
 
-如果默认的消息不符合实际需要，CheckStyle 所有消息可以定制。具体可以参考文档 4.3.1 如何使用。
+CheckStyle 所有消息可以定制，如果默认的消息不符合实际需要则可以可以参考文档 4.3.1 进行自定义。
 
 ##### 4.1.13.2 ExecutableStatementCount
+
+自 Checkstyle 3.2 引入。
+
+限制某范围内可执行语句的数量。
+
+**属性清单**
+
+名称 |     描述     | 类型    | 默认值 | 引入版本
+----|--------------|---------|-------|------
+max | 允许最长的语句数 | Integer |   30  | 3.2
+tokens | 检查的 tokens | 这些类型 Token 的子集：CTOR_DEF, METHOD_DEF, INSTANCE_INIT, STATIC_INIT. |   CTOR_DEF, METHOD_DEF, INSTANCE_INIT, STATIC_INIT.  | 3.2
+
+- CTOR_DEF：构造函数定义
+- METHOD_DEF：方法定义
+- INSTANCE_INIT：实例初始化器（instance initializer）
+- STATIC_INIT：静态初始化块
+
+**示例配置**
+
+直接配置检查项:
+	
+	<module name="ExecutableStatementCount"/>
+	        
+为构造函数和方法定义，配置 20 行可执行代码行数限制的检查项：
+	
+	<module name="ExecutableStatementCount">
+	  <property name="max" value="20"/>
+	  <property name="tokens" value="CTOR_DEF,METHOD_DEF"/>
+	</module>
+
+**错误消息**
+
+	executableStatementCount
+
 ##### 4.1.13.3 FileLength
 ##### 4.1.13.4 LineLength
 ##### 4.1.13.5 MethodCount
