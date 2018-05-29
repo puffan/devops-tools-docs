@@ -50,6 +50,83 @@ Checkstyle 可以检查源代码的许多方面。它可以发现类设计，方
 #### 4.2 代码块（Block Checks）
 
 ##### 4.2.1 AvoidNestedBlocks
+
+
+
+自 Checkstyle 3.1 引入。
+
+发现嵌套的代码块，即在代码中自由使用的代码块。
+
+原理：嵌套的代码块常常是调试过程的残留代码，通常会对阅读者产生困扰。
+
+例如，这项检查如下代码中废弃的括号
+
+	public void guessTheOutput()
+	{
+	  int whichIsWhich = 0;
+	  {
+	      int whichIsWhich = 2;
+	  }
+	  System.out.println("value = " + whichIsWhich);
+	}
+
+以及调试/重构残留，如：
+
+	// if (conditionThatIsNotUsedAnyLonger)
+	{
+	  System.out.println("unconditional");
+	}
+
+对于 switch 语句中的 case 而言并不隐式地形成代码块。因此为了能够引入 case 范围内的本地变量则有必要形成一个嵌套代码块。可通过设置 allowInSwitchCase 属性为 true 来将 case 中的所有语句视为合法代码块。
+
+	switch (a)
+	{
+	  case 0:
+	    // Never OK, break outside block
+	    {
+	      x = 1;
+	    }
+	    break;
+	  case 1:
+	    // Never OK, statement outside block
+	    System.out.println("Hello");
+	    {
+	      x = 2;
+	      break;
+	    }
+	  case 1:
+	    // OK if allowInSwitchCase is true
+	    {
+	      System.out.println("Hello");
+	      x = 2;
+	      break;
+	    }
+	}
+
+**属性清单**
+
+名称 |     描述     | 类型    | 默认值 | 引入版本
+----|--------------|---------|-------|------
+allowInSwitchCase | 允许 case 语句中的内嵌代码块 | Boolean |   false  | 3.2
+
+**示例配置**
+
+检查配置
+
+	<module name="AvoidNestedBlocks"/>
+
+**错误消息**
+
+	block.nested
+
+**Package**
+
+com.puppycrawl.tools.checkstyle.checks.blocks
+
+**父模块**
+
+ TreeWalker
+
 ##### 4.2.2 EmptyBlock
 ##### 4.2.3 EmptyCatchBlock
 ##### 4.2.4 LeftCurly
