@@ -49,9 +49,7 @@ Checkstyle 可以检查源代码的许多方面。它可以发现类设计，方
 
 #### 4.2 代码块（Block Checks）
 
-##### 4.2.1 AvoidNestedBlocks
-
-
+##### 4.2.1 AvoidNestedBlocks（避免内嵌代码块）
 
 自 Checkstyle 3.1 引入。
 
