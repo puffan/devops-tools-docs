@@ -127,7 +127,8 @@ com.puppycrawl.tools.checkstyle.checks.blocks
 
 ##### 4.2.2 EmptyBlock
 ##### 4.2.3 EmptyCatchBlock
-##### 4.2.4 LeftCurly
+
+##### 4.2.4 LeftCurly（左花括号位置）
 
 自 Checkstyle 3.1 引入。
 
@@ -202,7 +203,84 @@ com.puppycrawl.tools.checkstyle.checks.blocks
 
  TreeWalker
 
-##### 4.2.5 NeedBraces
+##### 4.2.5 NeedBraces（是否需要花括号）
+
+自 Checkstyle 3.0 引入。
+
+检查代码块中的花括号。
+
+**属性清单**
+
+名称 |     描述     | 类型    | 默认值 | 引入版本
+----|--------------|---------|-------|------
+allowSingleLineStatement | 允许单行语句无花括号 | Boolean |   false  | 6.5
+allowEmptyLoopBody | 允许没有执行体的循环 | Boolean | false | 6.12.1
+tokens | 待检查的 tokens | subset of tokens LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_IF, LITERAL_WHILE, LITERAL_CASE, LITERAL_DEFAULT, LAMBDA. | LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_IF, LITERAL_WHILE. | 3.0
+
+**示例配置**
+
+检查配置
+
+	<module name="NeedBraces"/>
+
+配置检查 if 和 else 代码块需要花括号的策略
+
+	<module name="NeedBraces">
+	  <property name="tokens" value="LITERAL_IF, LITERAL_ELSE"/>
+	</module>
+
+配置允许单行无花括号 (if, while, do-while, for) 的配置
+
+	<module name="NeedBraces">
+	  <property name="allowSingleLineStatement" value="true"/>
+	</module>
+
+则如下代码块合法:
+
+	if (obj.isValid()) return true; // OK
+	while (obj.isValid()) return true; // OK
+	do this.notify(); while (o != null); // OK
+	for (int i = 0; ; ) this.notify(); // OK
+
+配置允许 case, default 单行代码无花括号，则：
+
+	<module name="NeedBraces">
+	  <property name="tokens" value="LITERAL_CASE, LITERAL_DEFAULT"/>
+	  <property name="allowSingleLineStatement" value="true"/>
+	</module>
+
+则如下代码块合法:
+
+	switch (num) {
+	  case 1: counter++; break; // OK
+	  case 6: counter += 10; break; // OK
+	  default: counter = 100; break; // OK
+	}
+
+配置允许循环无循环体:
+
+	<module name="NeedBraces">
+	  <property name="allowEmptyLoopBody" value="true"/>
+	</module>
+          
+则如下代码块合法:
+
+	while (value.incrementValue() < 5); // OK
+	for(int i = 0; i < 10; value.incrementValue()); // OK
+
+        
+**错误消息**
+
+	needBraces
+
+**Package**
+
+com.puppycrawl.tools.checkstyle.checks.blocks
+
+**父模块**
+
+ TreeWalker
+
 ##### 4.2.6 RightCurly
 
 #### 4.3 类设计（Class Design）
