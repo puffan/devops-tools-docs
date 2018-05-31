@@ -128,9 +128,82 @@ com.puppycrawl.tools.checkstyle.checks.blocks
 ##### 4.2.2 EmptyBlock
 ##### 4.2.3 EmptyCatchBlock
 ##### 4.2.4 LeftCurly
+
+自 Checkstyle 3.1 引入。
+
+检查代码块中左花括号 ('{') 的位置。该策略通过 option 属性控制字段来定义规则。
+
+
+**属性清单**
+
+名称 |     描述     | 类型    | 默认值 | 引入版本
+----|--------------|---------|-------|------
+option | 左花括号放置的位置 | 左括号策略 |   eol  | 3.0
+ignoreEnums | 如果值为 true，则在 eol 策略下忽略枚举型 | Boolean | true | 6.9
+tokens | 待检查的 tokens | subset of tokens INTERFACE_DEF, CLASS_DEF, ANNOTATION_DEF, ENUM_DEF, CTOR_DEF, METHOD_DEF, ENUM_CONSTANT_DEF, LITERAL_WHILE, LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_SYNCHRONIZED, LITERAL_SWITCH, LITERAL_DO, LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, STATIC_INIT, OBJBLOCK, LAMBDA. | INTERFACE_DEF, CLASS_DEF, ANNOTATION_DEF, ENUM_DEF, CTOR_DEF, METHOD_DEF, ENUM_CONSTANT_DEF, LITERAL_WHILE, LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_SYNCHRONIZED, LITERAL_SWITCH, LITERAL_DO, LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, STATIC_INIT, OBJBLOCK, LAMBDA. | 3.0
+
+**左括号策略**
+
+这个属性表示检查左花括号的位置。如下表格描述了合法的 options：
+
+eol(end of line)： 左括号必须在行尾。例如：
+
+	if (condition) {
+	   ...
+
+nl(new line) ： 左括号必须在新行。例如：
+
+    if (condition)
+    {
+        ...
+
+nlow(new line on wrap) ： 如果语句/表达式/声明 连接的左花括号跨越了多行，则使用 nl 规则。否则使用 eol 规则。nlow 全称是 "new line on wrap"。该规则下如下代码合法:
+
+    if (condition) {
+        ...
+
+如果一个语句跨多行，则 Checkstyle 将认为如下代码合法：
+
+    if (condition1 && condition2 &&
+        condition3 && condition4)
+    {
+        ...
+
+**示例配置**
+
+检查配置
+
+	<module name="LeftCurly"/>
+
+配置一个使用 nl 策略
+
+	<module name="LeftCurly">
+	  <property name="option" value="nl"/>
+	  <property name="tokens" value="CLASS_DEF,INTERFACE_DEF"/>
+	</module>
+
+配置一个检查枚举值定义的例子
+
+	<module name="LeftCurly">
+	  <property name="ignoreEnums" value="false"/>
+	</module>
+        
+**错误消息**
+
+	line.break.after
+	line.new
+	line.previous
+
+**Package**
+
+com.puppycrawl.tools.checkstyle.checks.blocks
+
+**父模块**
+
+ TreeWalker
+
 ##### 4.2.5 NeedBraces
 ##### 4.2.6 RightCurly
-
 
 #### 4.3 类设计（Class Design）
 
