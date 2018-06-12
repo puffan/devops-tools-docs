@@ -275,13 +275,141 @@ tokens | 待检查的 tokens | subset of tokens LITERAL_DO, LITERAL_ELSE, LITERA
 
 **Package**
 
-com.puppycrawl.tools.checkstyle.checks.blocks
+	com.puppycrawl.tools.checkstyle.checks.blocks
 
 **父模块**
 
- TreeWalker
+	TreeWalker
 
-##### 4.2.6 RightCurly
+##### 4.2.6 RightCurly（右花括号位置）
+
+自 Checkstyle 3.0 引入。
+
+检查代码块中右花括号 ('}') 的位置。该策略通过 option 属性控制字段来定义规则。
+
+代码块包括： if-else, try-catch-finally, while 循环, for 循环, 方法定义、类定义、构造函数定义、实例和静态初始化代码块。
+
+**属性清单**
+
+名称 |     描述     | 类型    | 默认值 | 引入版本
+----|--------------|---------|-------|------
+option | 右花括号放置的位置 | 右括号策略 |   same  | 3.0
+shouldStartLine | 是否检查是否 '}' 在新行 | Boolean | true | 4.2
+tokens | 待检查的 tokens | subset of tokens LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO, STATIC_INIT, INSTANCE_INIT, LAMBDA. | LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE. | 3.0
+
+**右括号策略**
+
+这个属性表示检查右花括号的位置。如下表格描述了合法的 options：
+
+**same**： 右括号应该和下一语句块儿保持在同一行上（包含语句块儿的语句：if/else-if/else or try/catch/finally）。同样允许语句块儿的单行格式。例如：
+
+    // try-catch-finally 代码块
+    try {
+        ...
+    } catch (Exception ex) { // 合法
+        ...
+    } finally { // 合法
+        ...
+    }
+
+    try {
+        ...
+    } // 不合法，因为没有和下一语句块儿保持在同一行上
+    catch (Exception ex) {
+          ...
+    } // 不合法，因为没有和下一语句块儿保持在同一行上
+    finally {
+          ...
+    }
+
+    // if-else 代码块
+    if (a > 0) {
+       ...
+    } else { // 合法
+       ...
+    }
+
+    if (a > 0) {
+       ...
+    } // 不合法，因为没有和下一语句块儿保持在同一行上
+    else {
+       ...
+    }
+
+    if (a > 0) {
+       ...
+    } int i = 5; // 不合法，下一多块语句是缺失的
+
+    // 单行代码块是不合法的，因为右括号没有和下一语句块儿保持在同一行上，
+    // 仅仅是行结束。
+    public long getId() {return id;} // 不合法
+
+    Thread t = new Thread(new Runnable() {
+       @Override
+       public void run() {
+                  ...
+       } // 不合法
+         // 因为没有和下一语句块儿保持在同一行上
+    }); // 合法，为了更好的代码可读性。
+
+    if (a > 0) { ... } // 合法，语句块儿的单行格式
+    if (a > 0) { ... } else { ... } // 合法，语句块儿的单行格式
+    if (a > 0) {
+        ...
+    } else { ... } // 合法，语句块儿的单行格式
+
+**alone**： 	右括号必须单独占一行，例如：
+
+ 	try {
+        ...
+    }
+    finally {
+        ...
+    }
+
+
+**alone_or_singleline**：右括号必须单独成行，但语句块儿的单行格式是可以的。例如：
+
+    // 右括号单独成行
+    try {
+        ...
+    }
+    finally {
+        ...
+    }
+
+    // 语句块儿的单行格式
+    public long getId() { return id; }
+                  
+
+**示例配置**
+
+检查配置
+
+	<module name="RightCurly"/>
+
+配置一个使用 alone 策略对 else 和 方法定义 字符串进行检查的例子：
+
+	<module name="RightCurly">
+	  <property name="option" value="alone"/>
+	  <property name="tokens" value="LITERAL_ELSE, METHOD_DEF"/>
+	</module>
+
+       
+**错误消息**
+
+	line.alone
+	line.break.before
+	line.new
+	line.same
+
+**Package**
+
+	com.puppycrawl.tools.checkstyle.checks.blocks
+
+**父模块**
+
+	TreeWalker
 
 #### 4.3 类设计（Class Design）
 
